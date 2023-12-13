@@ -1,28 +1,18 @@
 package Exec
 
 import (
-  //"fmt"
-  "os"
   "os/exec"
-  "syscall"
 )
 
-func OpenLink(link string) error{
+func OpenLink(link string){
   playerBin, err := exec.LookPath("mpv")
   if err != nil{
-    return err
+    return
   }
 
-  args := []string{"mpv","--profile=720p", link}
 
-  env := os.Environ()
-
-  execErr := syscall.Exec(playerBin, args, env)
-
-  if execErr != nil{
-    return execErr
+  cmd := exec.Command(playerBin, "--profile=720p",link)
+  if err := cmd.Run(); err != nil{
+    return
   }
-
-  return nil
-  
 }
