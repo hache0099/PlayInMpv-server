@@ -10,8 +10,7 @@ func OpenLink(link string){
     return
   }
 
-
-  cmd := exec.Command(playerBin, "--profile=720p",link)
+  cmd := exec.Command(playerBin,link)
   if err := cmd.Run(); err != nil{
     return
   }
