@@ -8,21 +8,37 @@ import (
 )
 
 func main(){
-  http.HandleFunc("/play", func (w http.ResponseWriter, req *http.Request){
+  
+  // Test handler
+  http.HandleFunc("/", func (w http.ResponseWriter, req *http.Request){
     fmt.Fprintf(w, "<h1>Hello World</h1>")
+  })
+  
+  http.HandleFunc("/play", func (w http.ResponseWriter, req *http.Request){
+    
     options := req.URL.Query()
+    
+    url, ok := options["url"]
+    
+    if !ok || len(url) < 1{
+		fmt.Fprint(w, "Error: you should specify an url")
+		return
+	}
+	
+	if len(url) > 1{
+		fmt.Fprint(w, "Error: you should specify only 1 url")
+		return
+	}
 
-    fmt.Println(options)
+    fmt.Fprint(w,"now playing ", url[0], "\n")
 
-    err := Exec.OpenLink(options["url"][0])
-    if err != nil{
-      panic(err)
-    }
+    go Exec.OpenLink(options["url"][0])
   })
 
   
-  
+  fmt.Println("Starting server")
   http.ListenAndServe(":8090",nil)
+  fmt.Println("Finishing server")
 }
 
 
