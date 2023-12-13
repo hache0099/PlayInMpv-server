@@ -1,3 +1,3 @@
-module github.com/hache0099/PlayInMpv
+module PlayInMPV
 
 go 1.21.3
